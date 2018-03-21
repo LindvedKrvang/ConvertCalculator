@@ -8,10 +8,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.krvang.lindved.convertcalculator.R;
+import com.krvang.lindved.convertcalculator.bll.IMetricConverter;
+import com.krvang.lindved.convertcalculator.bll.MetricConverter;
 
 public class MilesKilometersActivity extends AppCompatActivity {
 
@@ -21,6 +25,8 @@ public class MilesKilometersActivity extends AppCompatActivity {
     private EditText mValueText;
 
     private boolean mIsConvertingFromMilesToKilometers;
+
+    private IMetricConverter mMetricConverter;
 
     public static Intent getIntent(Context packageContext){
         Intent intent = new Intent(packageContext, MilesKilometersActivity.class);
@@ -32,8 +38,17 @@ public class MilesKilometersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_miles_kilometers);
 
+        mMetricConverter = new MetricConverter();
+
         initializeTextViews();
         setMilesToKilometers();
+
+        findViewById(R.id.btnCalculate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCalculateButton();
+            }
+        });
     }
 
     @Override
@@ -63,18 +78,20 @@ public class MilesKilometersActivity extends AppCompatActivity {
             setKilometersToMiles();
         else
             setMilesToKilometers();
-        mIsConvertingFromMilesToKilometers = !mIsConvertingFromMilesToKilometers;
     }
 
     /**
      * Sets what should be displayed if we are converting from Miles to Kilometers.
      */
     private void setMilesToKilometers(){
+        mIsConvertingFromMilesToKilometers = true;
+
         mTitleText.setText(R.string.milesToKilometersTitle);
         try{
             float value = Float.parseFloat(mValueText.getText().toString());
             String messagedToBeDisplayed = value + " " + getString(R.string.amountMiles);
             mAmountText.setText(messagedToBeDisplayed);
+            displayConvertedValue(value);
             mPostfixTest.setText(R.string.kilometers);
         }catch (NumberFormatException nfe){
             Log.e(TAG, "setMilesToKilometers: Value is not a float - Can be ignored");
@@ -86,16 +103,52 @@ public class MilesKilometersActivity extends AppCompatActivity {
      * Sets what should be displayed if we are converting from Kilometers to Miles.
      */
     private void setKilometersToMiles(){
+        mIsConvertingFromMilesToKilometers = false;
+
         mTitleText.setText(R.string.kilometersToMiles);
         try{
             float value = Float.parseFloat(mValueText.getText().toString());
             String messagedToBeDisplayed = value + " " + getString(R.string.amountKilometers);
             mAmountText.setText(messagedToBeDisplayed);
+            displayConvertedValue(value);
             mPostfixTest.setText(R.string.miles);
         }catch (NumberFormatException nfe){
             Log.e(TAG, "setKilometersToMiles: Value is not a float - Can be ignored");
             setNoValueEntered();
         }
+    }
+
+    private void displayConvertedValue(float initValue){
+        String result;
+        if(mIsConvertingFromMilesToKilometers)
+            result = mMetricConverter.milesToKilometers(initValue);
+        else
+            result = mMetricConverter.kilometersToMiles(initValue);
+        mResultText.setText(result);
+    }
+
+    /**
+     * If no value is entered - displays a message to the user. Else - Update the display.
+     */
+    private void handleCalculateButton(){
+        if(mValueText.getText().toString().equals("")){
+            displayToast(getString(R.string.pressCalculate), false);
+            return;
+        }
+        if(mIsConvertingFromMilesToKilometers)
+            setMilesToKilometers();
+        else
+            setKilometersToMiles();
+    }
+
+    /**
+     * Displays toast to the user.
+     * @param message - The message the toast should display.
+     * @param longToast - True if it is a long Toast. False if it is a short Toast.
+     */
+    private void displayToast(String message, boolean longToast){
+        int length = longToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT;
+        Toast.makeText(this, message, length).show();
     }
 
     /**
