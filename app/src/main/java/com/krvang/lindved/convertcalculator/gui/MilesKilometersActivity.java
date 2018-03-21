@@ -20,6 +20,8 @@ import com.krvang.lindved.convertcalculator.bll.MetricConverter;
 public class MilesKilometersActivity extends AppCompatActivity {
 
     public static String TAG = "TEST";
+    public static String KEY_CONVERTING_BOOLEAN = "com.krvang.lindved.covertBoolean";
+    public static String KEY_VALUE = "com.krvang.lindved.value";
 
     private TextView mTitleText, mAmountText, mResultText, mPostfixTest;
     private EditText mValueText;
@@ -37,11 +39,19 @@ public class MilesKilometersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_miles_kilometers);
+        initializeTextViews();
+
+        if(savedInstanceState != null){
+            mIsConvertingFromMilesToKilometers = !savedInstanceState.getBoolean(KEY_CONVERTING_BOOLEAN);
+            float value = savedInstanceState.getFloat(KEY_VALUE);
+            if(value != 0f) {
+                mValueText.setText(value + "");
+            }
+        }
 
         mMetricConverter = new MetricConverter();
 
-        initializeTextViews();
-        setMilesToKilometers();
+        switchConvertFrom();
 
         findViewById(R.id.btnCalculate).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +77,19 @@ public class MilesKilometersActivity extends AppCompatActivity {
             }
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(KEY_CONVERTING_BOOLEAN, mIsConvertingFromMilesToKilometers);
+        try{
+            float value = Float.parseFloat(mValueText.getText().toString());
+            outState.putFloat(KEY_VALUE, value);
+        }catch (NumberFormatException nfe){
+            Log.e(TAG, "onSaveInstanceState: Value is not a float - Can be ignored");
         }
     }
 
