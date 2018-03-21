@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">ConvertCalculator</string>
     <string name="switchResource">Switch</string>
+    <string name="milesToKilometersTitle">Converting Miles to Kilometers</string>
+    <string name="noValue">No value entered</string>
+    <string name="pressCalculate">Please enter a value and press \'Calculate\'</string>
+    <string name="amountMiles">Miles is:</string>
+    <string name="amountKilometers">Kilometers is:</string>
+    <string name="kilometersToMiles">Converting Kilometers to Miles</string>
+    <string name="kilometers">Kilometers</string>
+    <string name="miles">Miles</string>
 </resources>
