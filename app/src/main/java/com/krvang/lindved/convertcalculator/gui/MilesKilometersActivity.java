@@ -38,7 +38,7 @@ public class MilesKilometersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_miles_kilometers);
+        setContentView(R.layout.activity_convert);
         initializeTextViews();
 
         if(savedInstanceState != null){

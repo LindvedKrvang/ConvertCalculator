@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".gui.MilesKilometersActivity"></activity>
+        <activity android:name=".gui.MilesKilometersActivity" />
+        <activity android:name=".gui.CrownsDollarsActivity" />
     </application>
 
 </manifest>

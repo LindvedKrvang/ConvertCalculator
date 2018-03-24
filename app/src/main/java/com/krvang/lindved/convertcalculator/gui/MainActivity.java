@@ -20,10 +20,22 @@ public class MainActivity extends AppCompatActivity {
                 goToMilesKilometers();
             }
         });
+
+        findViewById(R.id.btnCrownsDollars).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToCrownsDollars();
+            }
+        });
     }
 
     private void goToMilesKilometers(){
         Intent intent = MilesKilometersActivity.getIntent(this);
+        startActivity(intent);
+    }
+
+    private void goToCrownsDollars(){
+        Intent intent = CrownsDollarsActivity.getIntent(this);
         startActivity(intent);
     }
 }
