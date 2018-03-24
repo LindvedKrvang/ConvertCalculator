@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.krvang.lindved.convertcalculator.R;
 import com.krvang.lindved.convertcalculator.bll.ICurrencyConverter;
@@ -40,9 +42,18 @@ public class CrownsDollarsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_convert);
 
+        mCurrencyConverter = new NonAccurateCurrencyConverter();
+
         initializeViews();
 
-        mCurrencyConverter = new NonAccurateCurrencyConverter();
+        switchConvertFrom();
+
+        findViewById(R.id.btnCalculate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCalculateButton();
+            }
+        });
     }
 
     @Override
@@ -64,6 +75,9 @@ public class CrownsDollarsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Switches the convert form.
+     */
     private void switchConvertFrom(){
         if(mIsConvertingFromCrownsToDollars)
             setDollarsToCrowns();
@@ -71,38 +85,48 @@ public class CrownsDollarsActivity extends AppCompatActivity {
             setCrownsToDollars();
     }
 
+    /**
+     * Updates all the TextViews to show conversion from Crowns to Dollars.
+     */
     private void setCrownsToDollars(){
         mIsConvertingFromCrownsToDollars = true;
 
-        mTitleText.setText("Converting Crowns to Dollars");
+        mTitleText.setText(R.string.CrownToDollars);
         try{
             float value = Float.parseFloat(mValueText.getText().toString());
-            String messagedToBeDisplayed = value + " " + "Crowns is:";
+            String messagedToBeDisplayed = value + " " + getString(R.string.CrownsIs);
             mAmountText.setText(messagedToBeDisplayed);
             displayConvertedValue(value);
-            mPostfixTest.setText("Dollars");
+            mPostfixTest.setText(R.string.Dollars);
         }catch (NumberFormatException nfe){
             Log.e(TAG, "setCrownsToDollars: Value is not a float - Can be ignored");
             setNoValueEntered();
         }
     }
 
+    /**
+     * Updates all the TextViews to show conversion from Dollars to Crowns.
+     */
     private void setDollarsToCrowns(){
         mIsConvertingFromCrownsToDollars = false;
 
-        mTitleText.setText("Converting Dollars to Crowns");
+        mTitleText.setText(R.string.DollarsToCrowns);
         try{
             float value = Float.parseFloat(mValueText.getText().toString());
-            String messagedToBeDisplayed = value + " " + "Dollars is:";
+            String messagedToBeDisplayed = value + " " + getString(R.string.DollarsIs);
             mAmountText.setText(messagedToBeDisplayed);
             displayConvertedValue(value);
-            mPostfixTest.setText("Crowns");
+            mPostfixTest.setText(R.string.Crowns);
         }catch (NumberFormatException nfe){
             Log.e(TAG, "setDollarsToCrowns: Value is not a float - Can be ignored");
             setNoValueEntered();
         }
     }
 
+    /**
+     * Gets the converted value from the CurrencyConverter and displays it.
+     * @param initValue The value the needs to be converted.
+     */
     private void displayConvertedValue(float initValue){
         String result;
         if(mIsConvertingFromCrownsToDollars)
@@ -110,6 +134,30 @@ public class CrownsDollarsActivity extends AppCompatActivity {
         else
             result = mCurrencyConverter.convertDollarsToCrowns(initValue);
         mResultText.setText(result);
+    }
+
+    /**
+     * If no value is entered - displays a message to the user. Else - Update the display.
+     */
+    private void handleCalculateButton(){
+        if(mValueText.getText().toString().equals("")){
+            displayToast(getString(R.string.pressCalculate), false);
+            return;
+        }
+        if(mIsConvertingFromCrownsToDollars)
+            setCrownsToDollars();
+        else
+            setDollarsToCrowns();
+    }
+
+    /**
+     * Displays toast to the user.
+     * @param message - The message the toast should display.
+     * @param longToast - True if it is a long Toast. False if it is a short Toast.
+     */
+    private void displayToast(String message, boolean longToast){
+        int length = longToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT;
+        Toast.makeText(this, message, length).show();
     }
 
     /**

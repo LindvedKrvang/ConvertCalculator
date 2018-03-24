@@ -9,4 +9,10 @@
     <string name="kilometersToMiles">Converting Kilometers to Miles</string>
     <string name="kilometers">Kilometers</string>
     <string name="miles">Miles</string>
+    <string name="CrownToDollars">Converting Crowns to Dollars</string>
+    <string name="CrownsIs">Crowns is:</string>
+    <string name="Dollars">Dollars</string>
+    <string name="DollarsToCrowns">Converting Dollars to Crowns</string>
+    <string name="DollarsIs">Dollars is:</string>
+    <string name="Crowns">Crowns</string>
 </resources>
