@@ -64,7 +64,7 @@ public class MilesKilometersActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.miles_kilometers_action_item, menu);
+        inflater.inflate(R.menu.switch_action_item, menu);
         return true;
     }
 

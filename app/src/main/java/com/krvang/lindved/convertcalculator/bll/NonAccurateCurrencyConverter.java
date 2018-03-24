@@ -1,5 +1,7 @@
 package com.krvang.lindved.convertcalculator.bll;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Lindved on 24-03-2018.
  */
@@ -7,14 +9,19 @@ package com.krvang.lindved.convertcalculator.bll;
 public class NonAccurateCurrencyConverter implements ICurrencyConverter {
 
     private static float EXCHANGE_RATE = 6.03f;
+    private DecimalFormat mFormatter;
 
-    @Override
-    public float convertCrownsToDollars(float crowns) {
-        return crowns / EXCHANGE_RATE;
+    public NonAccurateCurrencyConverter(){
+        mFormatter = new DecimalFormat("#.##");
     }
 
     @Override
-    public float convertDollarsToCrowns(float dollars) {
-        return dollars * EXCHANGE_RATE;
+    public String convertCrownsToDollars(float crowns) {
+        return mFormatter.format(crowns / EXCHANGE_RATE);
+    }
+
+    @Override
+    public String convertDollarsToCrowns(float dollars) {
+        return (dollars * EXCHANGE_RATE) + "";
     }
 }

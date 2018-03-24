@@ -9,14 +9,14 @@ public interface ICurrencyConverter {
     /**
      * Converts the parsed amount of Danish Crowns into American dollars.
      * @param crowns The amount of Danish Crowns.
-     * @return The amount of Danish Crowns in American dollars.
+     * @return The amount of Danish Crowns in American dollars as a String.
      */
-    float convertCrownsToDollars(float crowns);
+    String convertCrownsToDollars(float crowns);
 
     /**
      * Converts the parsed amount of American dollars int Danish Crowns.
      * @param dollars The amount of dollars.
-     * @return The amount of dollars in Danish Crowns.
+     * @return The amount of dollars in Danish Crowns as a String.
      */
-    float convertDollarsToCrowns(float dollars);
+    String convertDollarsToCrowns(float dollars);
 }
