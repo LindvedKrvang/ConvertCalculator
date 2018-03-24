@@ -20,7 +20,7 @@ import com.krvang.lindved.convertcalculator.bll.MetricConverter;
 public class MilesKilometersActivity extends AppCompatActivity {
 
     public static String TAG = "TEST";
-    public static String KEY_CONVERTING_BOOLEAN = "com.krvang.lindved.covertBoolean";
+    public static String KEY_CONVERTING_BOOLEAN = "com.krvang.lindved.convertBoolean";
     public static String KEY_VALUE = "com.krvang.lindved.value";
 
     private TextView mTitleText, mAmountText, mResultText, mPostfixTest;
